@@ -2,7 +2,6 @@
 
 **Consumer-Driven Black Market Displacement Framework: Interactive Policy Analysis Tool**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://[your-username].github.io/cbdt-calculator/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Research](https://img.shields.io/badge/research-Harvard_Dataverse-red)](https://dataverse.harvard.edu/)
 
