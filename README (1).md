@@ -24,7 +24,7 @@ The **Consumer-Driven Black Market Displacement (CBDT) Framework** is a predicti
 ## Validation & Research
 
 - **Mean Absolute Error:** 5% across 24 U.S. markets
-- **Dataset:** Published via [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/MDVDTQ)
+- **Dataset:** 
 - **Methodology:** Peer-reviewed research available at [dankreports.com](https://www.dankreports.com)
 - **Author:** Daniel Kief
 
