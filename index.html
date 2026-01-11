@@ -680,7 +680,10 @@
                         </p>
                         <select id="stateSelector" style="width: 100%; padding: 12px; font-size: 1em; border-radius: 8px; border: 2px solid #667eea; margin-bottom: 10px;">
                             <option value="">Select a state...</option>
+                            <option value="colorado">✓ Colorado</option>
                             <option value="florida">✓ Florida</option>
+                            <option value="illinois">✓ Illinois</option>
+                            <option value="michigan">✓ Michigan</option>
                             <option value="oregon">✓ Oregon</option>
                             <option disabled>──────────</option>
                             <option disabled value="">Alabama (Coming Soon)</option>
@@ -688,13 +691,11 @@
                             <option disabled value="">Arizona (Coming Soon)</option>
                             <option disabled value="">Arkansas (Coming Soon)</option>
                             <option disabled value="">California (Coming Soon)</option>
-                            <option disabled value="">Colorado (Coming Soon)</option>
                             <option disabled value="">Connecticut (Coming Soon)</option>
                             <option disabled value="">Delaware (Coming Soon)</option>
                             <option disabled value="">Georgia (Coming Soon)</option>
                             <option disabled value="">Hawaii (Coming Soon)</option>
                             <option disabled value="">Idaho (Coming Soon)</option>
-                            <option disabled value="">Illinois (Coming Soon)</option>
                             <option disabled value="">Indiana (Coming Soon)</option>
                             <option disabled value="">Iowa (Coming Soon)</option>
                             <option disabled value="">Kansas (Coming Soon)</option>
@@ -703,7 +704,6 @@
                             <option disabled value="">Maine (Coming Soon)</option>
                             <option disabled value="">Maryland (Coming Soon)</option>
                             <option disabled value="">Massachusetts (Coming Soon)</option>
-                            <option disabled value="">Michigan (Coming Soon)</option>
                             <option disabled value="">Minnesota (Coming Soon)</option>
                             <option disabled value="">Mississippi (Coming Soon)</option>
                             <option disabled value="">Missouri (Coming Soon)</option>
@@ -936,16 +936,18 @@
             
             if (!state) return;
             
-            // Only Florida and Oregon have published analyses
+            // Available state analyses with URLs
             const stateUrls = {
+                'colorado': 'https://www.dankreports.com/colorado-cannabis-10-year-analysis/',
                 'florida': 'https://www.dankreports.com/florida-recreational-cannabis-forecast/',
+                'illinois': 'https://www.dankreports.com/illinois-cannabis-market-analysis/',
+                'michigan': 'https://www.dankreports.com/michigan-cannabis-market-export-bubble/',
                 'oregon': 'https://www.dankreports.com/oregon-cannabis-market-analysis-success/'
             };
             
             if (stateUrls[state]) {
                 window.open(stateUrls[state], '_blank');
             }
-            // Do nothing for other states - they're disabled in the dropdown
         }
     </script>
 </body>
