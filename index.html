@@ -516,11 +516,12 @@
             <div>
                 <div class="section">
                     <div class="preset-buttons">
-                        <button class="preset-button" onclick="loadColoradoPreset()">Colorado (91%)</button>
-                        <button class="preset-button" onclick="loadOregonPreset()">Oregon (100%)</button>
-                        <button class="preset-button" onclick="loadWashingtonPreset()">Washington (76%)</button>
-                        <button class="preset-button" onclick="loadIllinoisPreset()">Illinois (46%)</button>
-                        <button class="preset-button" onclick="loadFloridaPreset()">Florida (33%)</button>
+                        <button class="preset-button" onclick="loadColoradoPreset()">Colorado (108%)</button>
+                        <button class="preset-button" onclick="loadOregonPreset()">Oregon (107%)</button>
+                        <button class="preset-button" onclick="loadMassachusettsPreset()">Massachusetts (100%)</button>
+                        <button class="preset-button" onclick="loadCaliforniaPreset()">California (63%)</button>
+                        <button class="preset-button" onclick="loadMarylandPreset()">Maryland (49%)</button>
+                        <button class="preset-button" onclick="loadIllinoisPreset()">Illinois (30%)</button>
                         <button class="preset-button" onclick="resetToDefaults()">Typical Market</button>
                     </div>
                     
@@ -680,9 +681,13 @@
                         </p>
                         <select id="stateSelector" style="width: 100%; padding: 12px; font-size: 1em; border-radius: 8px; border: 2px solid #667eea; margin-bottom: 10px;">
                             <option value="">Select a state...</option>
+                            <option value="california">✓ California</option>
                             <option value="colorado">✓ Colorado</option>
                             <option value="florida">✓ Florida</option>
                             <option value="illinois">✓ Illinois</option>
+                            <option value="maine">✓ Maine</option>
+                            <option value="maryland">✓ Maryland</option>
+                            <option value="massachusetts">✓ Massachusetts</option>
                             <option value="michigan">✓ Michigan</option>
                             <option value="oregon">✓ Oregon</option>
                             <option disabled>──────────</option>
@@ -690,7 +695,6 @@
                             <option disabled value="">Alaska (Coming Soon)</option>
                             <option disabled value="">Arizona (Coming Soon)</option>
                             <option disabled value="">Arkansas (Coming Soon)</option>
-                            <option disabled value="">California (Coming Soon)</option>
                             <option disabled value="">Connecticut (Coming Soon)</option>
                             <option disabled value="">Delaware (Coming Soon)</option>
                             <option disabled value="">Georgia (Coming Soon)</option>
@@ -701,9 +705,6 @@
                             <option disabled value="">Kansas (Coming Soon)</option>
                             <option disabled value="">Kentucky (Coming Soon)</option>
                             <option disabled value="">Louisiana (Coming Soon)</option>
-                            <option disabled value="">Maine (Coming Soon)</option>
-                            <option disabled value="">Maryland (Coming Soon)</option>
-                            <option disabled value="">Massachusetts (Coming Soon)</option>
                             <option disabled value="">Minnesota (Coming Soon)</option>
                             <option disabled value="">Mississippi (Coming Soon)</option>
                             <option disabled value="">Missouri (Coming Soon)</option>
@@ -855,11 +856,15 @@
         
         // Preset button functions using real validated state data
         function loadIllinoisPreset() {
-            document.getElementById('priceGap').value = 0.50; // Capped at slider max (actual 56%)
-            document.getElementById('density').value = 0.16; // Adjusted to hit 46% with capped price
-            document.getElementById('safety').value = 0.85; // Upgraded from 0.4
-            document.getElementById('convenience').value = 0.30; // Upgraded from 0.2
-            document.getElementById('enforcement').value = 0.60;
+            // Illinois: 30% legal capture
+            // Price: $8.13/gram legal vs $5-7/gram black market = major disadvantage
+            // Tax: 25-35%, Density: 2.1 per 100K (severe under-licensing)
+            // BMDE Score: +0.20 price, +0.30 density, +0.75 quality, +0.50 convenience, +0.50 enforcement
+            document.getElementById('priceGap').value = 0.50; // Legal 16-63% MORE expensive than black market
+            document.getElementById('density').value = -0.30; // Severe under-licensing, oligopoly
+            document.getElementById('safety').value = 0.75; // Good quality/testing
+            document.getElementById('convenience').value = 0.50; // Moderate convenience
+            document.getElementById('enforcement').value = 0.50; // Functional but strained
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -867,11 +872,15 @@
         }
         
         function loadColoradoPreset() {
-            document.getElementById('priceGap').value = 0; // $5 parity
-            document.getElementById('density').value = 0.79; // Adjusted to hit 91%
-            document.getElementById('safety').value = 0.70; // 0.7/1.0 very competitive
-            document.getElementById('convenience').value = 0.50; // 0.5/1.0 mature
-            document.getElementById('enforcement').value = 0.30; // 0.3/1.0 moderate
+            // Colorado: 108% legal capture (100% resident + 7-9% tourism)
+            // Price: $3.66-3.82/gram legal vs $5-7/gram black market = legal advantage
+            // Tax: 15-20%, Density: 20 per 100K (good competition)
+            // BMDE Score: +0.85 price, +0.75 density, +0.85 quality, +0.65 convenience, +0.60 enforcement
+            document.getElementById('priceGap').value = -0.25; // Legal 25-47% cheaper
+            document.getElementById('density').value = 0.75; // Good density, ~1,200 per store
+            document.getElementById('safety').value = 0.85; // Excellent quality/testing
+            document.getElementById('convenience').value = 0.65; // Good convenience
+            document.getElementById('enforcement').value = 0.60; // Functional enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -879,35 +888,64 @@
         }
         
         function loadOregonPreset() {
-            document.getElementById('priceGap').value = -0.21; // Legal slightly cheaper
-            document.getElementById('density').value = 0.75;
-            document.getElementById('safety').value = 0.71;
-            document.getElementById('convenience').value = 0.65;
-            document.getElementById('enforcement').value = 1.00; // Maxed out
+            // Oregon: 107% legal capture (100% resident + small tourism)
+            // Price: $3.89-4.00/gram legal vs $4-5/gram black market = competitive
+            // Tax: 17-20%, Density: excellent but over-licensed
+            // BMDE Score: +0.85 price, +0.75 density, +0.71 quality, +0.65 convenience, +0.60 enforcement
+            document.getElementById('priceGap').value = -0.20; // Legal 0-25% cheaper
+            document.getElementById('density').value = 0.75; // Good density despite over-licensing
+            document.getElementById('safety').value = 0.71; // Excellent quality
+            document.getElementById('convenience').value = 0.65; // Good convenience
+            document.getElementById('enforcement').value = 0.60; // Functional enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
             calculate();
         }
         
-        function loadWashingtonPreset() {
-            document.getElementById('priceGap').value = 0.27; // $7 vs $5.50 = 27% premium
-            document.getElementById('density').value = 0.60;
-            document.getElementById('safety').value = 0.85; // Upgraded from 0.5
-            document.getElementById('convenience').value = 0.30;
-            document.getElementById('enforcement').value = 0.50;
+        function loadMassachusettsPreset() {
+            // Massachusetts: 100% legal capture
+            // Price: $4.69-4.81/gram legal vs $5-8/gram black market = legal advantage
+            // Tax: 17-20%, Density: 7.2 per 100K (strong competition)
+            // BMDE Score: +0.85 price, +0.75 density, +0.85 quality, +0.60 convenience, +0.60 enforcement
+            document.getElementById('priceGap').value = -0.15; // Legal 6-41% cheaper
+            document.getElementById('density').value = 0.75; // Strong retail competition
+            document.getElementById('safety').value = 0.85; // Excellent quality/testing
+            document.getElementById('convenience').value = 0.60; // Good convenience
+            document.getElementById('enforcement').value = 0.60; // Functional enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
             calculate();
         }
         
-        function loadFloridaPreset() {
-            document.getElementById('priceGap').value = 0.32;
-            document.getElementById('density').value = -0.30;
-            document.getElementById('safety').value = 0.85; // Upgraded from 0.4
-            document.getElementById('convenience').value = -0.50; // Medical barriers
-            document.getElementById('enforcement').value = 0.60;
+        function loadCaliforniaPreset() {
+            // California: 63% legal capture
+            // Price: $4.22-4.80/gram legal vs $3.43/gram unlicensed = legal disadvantage
+            // Tax: 23-40% (15% excise + compounding sales + local taxes)
+            // CRITICAL: Enforcement collapse - unlicensed stores operate openly
+            // BMDE Score: Low enforcement (+0.1) is the fatal weakness
+            document.getElementById('priceGap').value = 0.30; // Legal 23-40% MORE expensive (unlicensed stores avoid all taxes)
+            document.getElementById('density').value = 0.30; // 2.6 per 100K - similar to IL/MD
+            document.getElementById('safety').value = 0.75; // Good quality for legal market
+            document.getElementById('convenience').value = 0.50; // Moderate convenience
+            document.getElementById('enforcement').value = 0.10; // ENFORCEMENT COLLAPSE - unlicensed proliferation
+            document.getElementById('fragmentation').value = 0;
+            document.getElementById('remove280E').checked = false;
+            document.getElementById('safeBanking').checked = false;
+            calculate();
+        }
+        
+        function loadMarylandPreset() {
+            // Maryland: 49% legal capture
+            // Price: $9.27/gram legal vs $5-7/gram black market = legal disadvantage
+            // Tax: 12% (low!), Density: 2.3 per 100K (insufficient)
+            // BMDE Score: Price disadvantage from retail pricing, not taxes
+            document.getElementById('priceGap').value = 0.35; // Legal 32-85% MORE expensive
+            document.getElementById('density').value = 0.30; // Under-licensed, 2.3 per 100K
+            document.getElementById('safety').value = 0.75; // Good quality/testing
+            document.getElementById('convenience').value = 0.50; // Moderate convenience
+            document.getElementById('enforcement').value = 0.60; // Functional enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -938,9 +976,13 @@
             
             // Available state analyses with URLs
             const stateUrls = {
+                'california': 'https://www.dankreports.com/california-cannabis-market-failure-analysis/',
                 'colorado': 'https://www.dankreports.com/colorado-cannabis-10-year-analysis/',
                 'florida': 'https://www.dankreports.com/florida-recreational-cannabis-forecast/',
                 'illinois': 'https://www.dankreports.com/illinois-cannabis-market-analysis/',
+                'maine': 'https://www.dankreports.com/maine-cannabis-market-analysis/',
+                'maryland': 'https://www.dankreports.com/maryland-cannabis-market-analysis/',
+                'massachusetts': 'https://www.dankreports.com/massachusetts-cannabis-licensing-trap/',
                 'michigan': 'https://www.dankreports.com/michigan-cannabis-market-export-bubble/',
                 'oregon': 'https://www.dankreports.com/oregon-cannabis-market-analysis-success/'
             };
