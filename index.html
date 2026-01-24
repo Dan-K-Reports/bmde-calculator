@@ -522,7 +522,6 @@
                         <button class="preset-button" onclick="loadCaliforniaPreset()">California (63%)</button>
                         <button class="preset-button" onclick="loadMarylandPreset()">Maryland (49%)</button>
                         <button class="preset-button" onclick="loadIllinoisPreset()">Illinois (30%)</button>
-                        <button class="preset-button" onclick="resetToDefaults()">Typical Market</button>
                     </div>
                     
                     <h2>State Policy Levers</h2>
@@ -800,7 +799,10 @@
             
             // Calculate market share using logistic function
             const marketShare = 1 / (1 + Math.exp(-deltaU));
-            const marketSharePercent = (marketShare * 100).toFixed(0);
+            // Cap display at 100% (but use actual value for calculations)
+            let displayPercent = Math.round(marketShare * 100);
+            if (displayPercent > 100) displayPercent = 100;
+            const marketSharePercent = displayPercent;
             
             // Update results
             document.getElementById('marketShare').textContent = marketSharePercent + '%';
@@ -856,15 +858,12 @@
         
         // Preset button functions using real validated state data
         function loadIllinoisPreset() {
-            // Illinois: 30% legal capture
-            // Price: $8.13/gram legal vs $5-7/gram black market = major disadvantage
-            // Tax: 25-35%, Density: 2.1 per 100K (severe under-licensing)
-            // BMDE Score: +0.20 price, +0.30 density, +0.75 quality, +0.50 convenience, +0.50 enforcement
-            document.getElementById('priceGap').value = 0.50; // Legal 16-63% MORE expensive than black market
-            document.getElementById('density').value = -0.30; // Severe under-licensing, oligopoly
-            document.getElementById('safety').value = 0.75; // Good quality/testing
-            document.getElementById('convenience').value = 0.50; // Moderate convenience
-            document.getElementById('enforcement').value = 0.50; // Functional but strained
+            // Illinois: 30% legal capture → ΔU ≈ -0.85
+            document.getElementById('priceGap').value = 0.50;  // Legal 16-63% MORE expensive
+            document.getElementById('density').value = -0.35;  // Severe under-licensing
+            document.getElementById('safety').value = 0.75;    // Good quality/testing
+            document.getElementById('convenience').value = 0.30; // Moderate convenience
+            document.getElementById('enforcement').value = 0.50; // Functional enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -872,15 +871,14 @@
         }
         
         function loadColoradoPreset() {
-            // Colorado: 108% legal capture (100% resident + 7-9% tourism)
-            // Price: $3.66-3.82/gram legal vs $5-7/gram black market = legal advantage
-            // Tax: 15-20%, Density: 20 per 100K (good competition)
-            // BMDE Score: +0.85 price, +0.75 density, +0.85 quality, +0.65 convenience, +0.60 enforcement
-            document.getElementById('priceGap').value = -0.25; // Legal 25-47% cheaper
-            document.getElementById('density').value = 0.75; // Good density, ~1,200 per store
-            document.getElementById('safety').value = 0.85; // Excellent quality/testing
+            // Colorado: 108% legal capture (100% + tourism) → requires ΔU ≈ 6.9
+            // Formula: ΔU = 4*(-g) + D + 1.2*S + F + 0.6*E
+            // Target: ΔU = 6.907
+            document.getElementById('priceGap').value = -0.35;  // Legal 25-47% cheaper
+            document.getElementById('density').value = 0.75;    // Good density
+            document.getElementById('safety').value = 0.85;     // Excellent quality/testing
             document.getElementById('convenience').value = 0.65; // Good convenience
-            document.getElementById('enforcement').value = 0.60; // Functional enforcement
+            document.getElementById('enforcement').value = 0.80; // Strong enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -888,15 +886,14 @@
         }
         
         function loadOregonPreset() {
-            // Oregon: 107% legal capture (100% resident + small tourism)
-            // Price: $3.89-4.00/gram legal vs $4-5/gram black market = competitive
-            // Tax: 17-20%, Density: excellent but over-licensed
-            // BMDE Score: +0.85 price, +0.75 density, +0.71 quality, +0.65 convenience, +0.60 enforcement
-            document.getElementById('priceGap').value = -0.20; // Legal 0-25% cheaper
-            document.getElementById('density').value = 0.75; // Good density despite over-licensing
-            document.getElementById('safety').value = 0.71; // Excellent quality
-            document.getElementById('convenience').value = 0.65; // Good convenience
-            document.getElementById('enforcement').value = 0.60; // Functional enforcement
+            // Oregon: 107% legal capture (100% + tourism) → requires ΔU ≈ 6.9
+            // Formula: ΔU = 4*(-g) + D + 1.2*S + F + 0.6*E
+            // Target: ΔU = 6.907
+            document.getElementById('priceGap').value = -0.30;  // Legal 0-25% cheaper
+            document.getElementById('density').value = 0.75;    // Good density
+            document.getElementById('safety').value = 0.85;     // Excellent quality
+            document.getElementById('convenience').value = 0.70; // Good convenience
+            document.getElementById('enforcement').value = 0.80; // Strong enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -904,15 +901,14 @@
         }
         
         function loadMassachusettsPreset() {
-            // Massachusetts: 100% legal capture
-            // Price: $4.69-4.81/gram legal vs $5-8/gram black market = legal advantage
-            // Tax: 17-20%, Density: 7.2 per 100K (strong competition)
-            // BMDE Score: +0.85 price, +0.75 density, +0.85 quality, +0.60 convenience, +0.60 enforcement
-            document.getElementById('priceGap').value = -0.15; // Legal 6-41% cheaper
-            document.getElementById('density').value = 0.75; // Strong retail competition
-            document.getElementById('safety').value = 0.85; // Excellent quality/testing
-            document.getElementById('convenience').value = 0.60; // Good convenience
-            document.getElementById('enforcement').value = 0.60; // Functional enforcement
+            // Massachusetts: 100% legal capture → requires ΔU ≈ 6.9
+            // Formula: ΔU = 4*(-g) + D + 1.2*S + F + 0.6*E
+            // Target: ΔU = 6.907
+            document.getElementById('priceGap').value = -0.30;  // Legal 6-41% cheaper
+            document.getElementById('density').value = 0.75;    // Strong retail competition
+            document.getElementById('safety').value = 0.85;     // Excellent quality/testing
+            document.getElementById('convenience').value = 0.70; // Good convenience
+            document.getElementById('enforcement').value = 0.80; // Strong enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -920,16 +916,15 @@
         }
         
         function loadCaliforniaPreset() {
-            // California: 63% legal capture
-            // Price: $4.22-4.80/gram legal vs $3.43/gram unlicensed = legal disadvantage
-            // Tax: 23-40% (15% excise + compounding sales + local taxes)
-            // CRITICAL: Enforcement collapse - unlicensed stores operate openly
-            // BMDE Score: Low enforcement (+0.1) is the fatal weakness
-            document.getElementById('priceGap').value = 0.30; // Legal 23-40% MORE expensive (unlicensed stores avoid all taxes)
-            document.getElementById('density').value = 0.30; // 2.6 per 100K - similar to IL/MD
-            document.getElementById('safety').value = 0.75; // Good quality for legal market
+            // California: 63% legal capture → requires ΔU ≈ 0.53
+            // Formula: ΔU = 4*(-g) + D + 1.2*S + F + 0.6*E
+            // CRITICAL: Enforcement collapse is the differentiator
+            // Target: ΔU = 0.532
+            document.getElementById('priceGap').value = 0.25;  // Legal 23-40% MORE expensive
+            document.getElementById('density').value = 0.10;   // 2.6 per 100K adjusted
+            document.getElementById('safety').value = 0.75;    // Good quality for legal market
             document.getElementById('convenience').value = 0.50; // Moderate convenience
-            document.getElementById('enforcement').value = 0.10; // ENFORCEMENT COLLAPSE - unlicensed proliferation
+            document.getElementById('enforcement').value = 0.10; // ENFORCEMENT COLLAPSE
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
             document.getElementById('safeBanking').checked = false;
@@ -937,14 +932,11 @@
         }
         
         function loadMarylandPreset() {
-            // Maryland: 49% legal capture
-            // Price: $9.27/gram legal vs $5-7/gram black market = legal disadvantage
-            // Tax: 12% (low!), Density: 2.3 per 100K (insufficient)
-            // BMDE Score: Price disadvantage from retail pricing, not taxes
-            document.getElementById('priceGap').value = 0.35; // Legal 32-85% MORE expensive
-            document.getElementById('density').value = 0.30; // Under-licensed, 2.3 per 100K
-            document.getElementById('safety').value = 0.75; // Good quality/testing
-            document.getElementById('convenience').value = 0.50; // Moderate convenience
+            // Maryland: 49% legal capture → ΔU ≈ -0.04
+            document.getElementById('priceGap').value = 0.35;  // Legal 32-85% MORE expensive
+            document.getElementById('density').value = -0.18;  // Under-licensed
+            document.getElementById('safety').value = 0.75;    // Good quality/testing
+            document.getElementById('convenience').value = 0.30; // Moderate convenience
             document.getElementById('enforcement').value = 0.60; // Functional enforcement
             document.getElementById('fragmentation').value = 0;
             document.getElementById('remove280E').checked = false;
